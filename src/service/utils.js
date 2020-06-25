@@ -14,8 +14,8 @@ const shuffle = (someArray) => {
       someArray[i],
     ];
   }
-
-  return someArray;
+  const someArrayMut = someArray;
+  return someArrayMut;
 };
 
 
