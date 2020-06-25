@@ -5,6 +5,7 @@ const fs = require(`fs`);
 
 const DEFAULT_COUNT = 1;
 const FILE_NAME = `mocks.json`;
+const COUNT_MAX = 1000;
 const ANNOUNCE_SENTENCES_RESTRICT = {
   min: 1,
   max: 5,
@@ -65,12 +66,16 @@ const generateOffers = (count) =>
   Array(count)
     .fill({})
     .map(() => ({
-      category: [CATEGORIES[getRandomInt(0, CATEGORIES.length - 1)]],
+      category: [
+        shuffle(CATEGORIES).slice(0, getRandomInt(0, CATEGORIES.length - 1)),
+      ],
       announce: shuffle(SENTENCES)
         .slice(ANNOUNCE_SENTENCES_RESTRICT.min, ANNOUNCE_SENTENCES_RESTRICT.max)
         .join(` `),
       title: TITLES[getRandomInt(0, TITLES.length - 1)],
-      fullText: shuffle(SENTENCES)*getRandomInt(0, SENTENCES.length-1),
+      fullText: shuffle(SENTENCES)
+        .slice(0, getRandomInt(0, SENTENCES.length - 1))
+        .join(` `),
       createdDate: getRandomDate(),
     }));
 
@@ -90,6 +95,11 @@ module.exports = {
     const [count] = args;
     const countOffer = Number.parseInt(count, 10) || DEFAULT_COUNT;
     const content = JSON.stringify(generateOffers(countOffer));
+
+    if (count > COUNT_MAX) {
+      console.error(`Не больше ${COUNT_MAX} публикаций`);
+      return true;
+    }
 
     makeMockData(FILE_NAME, content);
   }
