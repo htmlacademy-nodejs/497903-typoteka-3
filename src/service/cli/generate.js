@@ -65,14 +65,12 @@ const generateOffers = (count) =>
   Array(count)
     .fill({})
     .map(() => ({
-      category: [
-        shuffle(CATEGORIES).slice(0, getRandomInt(0, CATEGORIES.length - 1)),
-      ],
+      category: shuffle(CATEGORIES.slice()).slice(0, getRandomInt(0, CATEGORIES.length - 1)),
       announce: shuffle(SENTENCES.slice())
         .slice(ANNOUNCE_SENTENCES_RESTRICT.min, ANNOUNCE_SENTENCES_RESTRICT.max)
         .join(` `),
       title: TITLES[getRandomInt(0, TITLES.length - 1)],
-      fullText: shuffle(SENTENCES)
+      fullText: shuffle(SENTENCES.slice())
         .slice(0, getRandomInt(0, SENTENCES.length - 1))
         .join(` `),
       createdDate: getRandomDate(),
