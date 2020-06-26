@@ -11,7 +11,6 @@ const ANNOUNCE_SENTENCES_RESTRICT = {
   max: 5,
 };
 
-
 const TITLES = [
   `Ёлки. История деревьев`,
   `Как перестать беспокоиться и начать жить`,
@@ -24,7 +23,7 @@ const TITLES = [
   `Как собрать камни бесконечности`,
   `Борьба с прокрастинацией`,
   `Рок — это протест`,
-  `Самый лучший музыкальный альбом этого года`
+  `Самый лучший музыкальный альбом этого года`,
 ];
 
 const SENTENCES = [
@@ -69,7 +68,7 @@ const generateOffers = (count) =>
       category: [
         shuffle(CATEGORIES).slice(0, getRandomInt(0, CATEGORIES.length - 1)),
       ],
-      announce: shuffle(SENTENCES)
+      announce: shuffle(SENTENCES.slice())
         .slice(ANNOUNCE_SENTENCES_RESTRICT.min, ANNOUNCE_SENTENCES_RESTRICT.max)
         .join(` `),
       title: TITLES[getRandomInt(0, TITLES.length - 1)],
@@ -102,5 +101,5 @@ module.exports = {
     }
 
     makeMockData(FILE_NAME, content);
-  }
+  },
 };
