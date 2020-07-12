@@ -16,6 +16,15 @@ const pathCategories = './data/categories.txt';
 const pathSentences = './data/sentences.txt';
 const pathTitles = './data/titles.txt';
 
+const readFiles = async (path) => {
+  try {
+    const result = await fs.readFile(path, `utf8`);
+    return result.split(`\n`);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 const generateOffers = (count) =>
   Array(count)
     .fill({})
