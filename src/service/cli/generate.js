@@ -3,6 +3,8 @@
 const { getRandomInt, shuffle, getRandomDate } = require(`../utils`);
 const fs = require(`fs`).promises;
 const chalk = require(`chalk`);
+const { nanoid } = require(`nanoid`);
+const { MAX_ID_LENGTH } = require(`../constants`);
 
 const DEFAULT_COUNT = 1;
 const FILE_NAME = `mocks.json`;
@@ -30,6 +32,7 @@ const generateOffers = (count, CATEGORIES, SENTENCES, TITLES, COMMENTS) =>
   Array(count)
     .fill({})
     .map(() => ({
+      id: nanoid(MAX_ID_LENGTH),
       category: shuffle(CATEGORIES.slice()).slice(
         0,
         getRandomInt(0, CATEGORIES.length - 1)
@@ -46,6 +49,7 @@ const generateOffers = (count, CATEGORIES, SENTENCES, TITLES, COMMENTS) =>
         .fill({})
         .map(() => ({
           text: shuffle(COMMENTS).slice(0, getRandomInt(1, 3)).join(``),
+          id: nanoid(MAX_ID_LENGTH),
         })),
     }));
 
