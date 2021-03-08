@@ -43,6 +43,11 @@ const getRandomDate = () => {
   return format(dt);
 };
 
+// Функция для форматирования даты
+module.exports.changeDateFormat = (date) => {
+  return `${date.split(`.`).reverse().join(`-`)}T${`00:00:00.000Z`}`;
+};
+
 module.exports = {
   getRandomDate,
   getRandomInt,
