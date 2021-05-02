@@ -20,11 +20,11 @@ class API {
   }
 
   // методы для получения и отправки данных
-  getArticles() {
-    return this._load("/articles");
+  getArticles({ offset, limit, comments } = {}) {
+    return this._load(`/articles`, { params: { offset, limit, comments } });
   }
 
-  getArticle(id) {
+  getArticle(id, comments) {
     return this._load(`/articles/${id}`);
   }
 
@@ -32,8 +32,8 @@ class API {
     return this._load(`/search`, { params: { query } });
   }
 
-  async getCategories() {
-    return this._load("/category");
+  async getCategories(count) {
+    return this._load(`/category`, { params: { count } });
   }
 
   async createArticle(data) {
