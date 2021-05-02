@@ -2,7 +2,9 @@
 
 const express = require(`express`);
 const request = require(`supertest`);
+const Sequelize = require(`sequelize`);
 
+const initDB = require(`../lib/init-db`);
 const articles = require(`./articles`);
 const DataService = require(`../data-service/articles`);
 const CommentService = require(`../data-service/comment`);
@@ -161,11 +163,11 @@ const mockData = [
   },
 ];
 
-const createAPI = () => {
-  const app = express();
-  const cloneData = JSON.parse(JSON.stringify(mockData));
+const createAPI = async () => {
+  const mockDB = new Sequelize(`sqlite::memory:`, { logging: false });
+  await initDB(mockDB, { categories: mockCategories, articles: mockArticles });
   app.use(express.json());
-  articles(app, new DataService(cloneData), new CommentService());
+  articles(app, new DataService(mockDB), new CommentService(mockDB));
   return app;
 };
 
