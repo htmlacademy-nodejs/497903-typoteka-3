@@ -1,6 +1,10 @@
+"use strict";
+
 const express = require(`express`);
 const request = require(`supertest`);
+const Sequelize = require(`sequelize`);
 
+const initDB = require(`../lib/init-db`);
 const search = require(`./search`);
 const DataService = require(`../data-service/search`);
 
@@ -184,9 +188,14 @@ const mockData = [
   },
 ];
 
+const mockDB = new Sequelize(`sqlite::memory:`, { logging: false });
+
 const app = express();
 app.use(express.json());
-search(app, new DataService(mockData));
+beforeAll(async () => {
+  await initDB(mockDB, { categories: mockCategories, articles: mockArticles });
+  search(app, new DataService(mockDB));
+});
 
 describe(`API returns offer based on search query`, () => {
   let response;

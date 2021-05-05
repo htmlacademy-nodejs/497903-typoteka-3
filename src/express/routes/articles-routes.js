@@ -38,7 +38,7 @@ articlesRoutes.post(`/add`, upload.single(`avatar`), async (req, res) => {
   const articleData = {
     title: body.title,
     createdDate: body.date,
-    category: body.category || [],
+    categories: body.category || [],
     announce: body.announcement,
     fullText: body[`full-text`],
   };
@@ -59,6 +59,10 @@ articlesRoutes.get(`/edit/:id`, async (req, res) => {
   res.render(`edit-post`, { article, categories });
 });
 
-articlesRoutes.get(`/:id`, (req, res) => res.render(`post`));
+articlesRoutes.get(`/:id`, async (req, res) => {
+  const { id } = req.params;
+  const article = await api.getArticle(id, true);
+  res.render(`articles/ticket`, { article });
+});
 
 module.exports = articlesRoutes;

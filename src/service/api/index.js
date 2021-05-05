@@ -5,22 +5,24 @@ const articles = require(`../api/articles`);
 const category = require(`../api/category`);
 const search = require(`../api/search`);
 
-const getMockData = require(`../lib/get-mock-data`);
-
 const {
-  ArticlesService,
+  ArticleService,
   CategoryService,
   CommentService,
   SearchService,
 } = require(`../data-service`);
 
-const app = new Router();
-(async () => {
-  const mockData = await getMockData();
+const sequelize = require(`../lib/sequelize`);
+const defineModels = require(`../models`);
 
-  articles(app, new ArticlesService(mockData), new CommentService());
-  category(app, new CategoryService(mockData));
-  search(app, new SearchService(mockData));
+const app = new Router();
+
+defineModels(sequelize);
+
+(() => {
+  articles(app, new ArticleService(sequelize), new CommentService(sequelize));
+  category(app, new CategoryService(sequelize));
+  search(app, new SearchService(sequelize));
 })();
 
 module.exports = app;
