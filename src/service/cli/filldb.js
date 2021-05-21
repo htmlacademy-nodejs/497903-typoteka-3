@@ -54,8 +54,8 @@ const generateArticles = (count, CATEGORIES, SENTENCES, TITLES, COMMENTS) =>
       picture: getPictureFilename(
         getRandomInt(PictureRestrict.min, PictureRestrict.max)
       ),
-      announce: shuffle(SENTENCES.slice())
-        .slice(ANNOUNCE_SENTENCES_RESTRICT.min, ANNOUNCE_SENTENCES_RESTRICT.max)
+      announce: shuffle(SENTENCES)
+        .slice(getRandomInt(ANNOUNCE_SENTENCES_RESTRICT.min, ANNOUNCE_SENTENCES_RESTRICT.max))
         .join(` `),
       fullText: shuffle(SENTENCES.slice())
         .slice(getRandomInt(0, SENTENCES.length - 1))
