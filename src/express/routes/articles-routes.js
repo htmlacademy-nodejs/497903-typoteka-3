@@ -3,7 +3,7 @@
 const { Router } = require(`express`);
 const articlesRoutes = new Router();
 const api = require(`../api`).getAPI();
-const { changeDateFormat } = require(`../../service/utils`);
+const { changeDateFormat, ensureArray } = require(`../../service/utils`);
 
 const multer = require(`multer`);
 const path = require(`path`);
@@ -29,40 +29,78 @@ articlesRoutes.get(`/category/:id`, (req, res) =>
 );
 
 articlesRoutes.get(`/add`, async (req, res) => {
+  const { error } = req.query;
   const categories = await api.getCategories();
-  res.render(`new-post`, { categories });
+  res.render(`new-post`, { categories, error });
 });
 
 articlesRoutes.post(`/add`, upload.single(`avatar`), async (req, res) => {
   const { body } = req;
+  const { user } = req.session;
   const articleData = {
     title: body.title,
-    createdDate: body.date,
-    categories: body.category || [],
+    createdDate: changeDateFormat(body.date),
+    categories: ensureArray(body.category),
     announce: body.announcement,
     fullText: body[`full-text`],
+    userId: user.id
   };
   try {
     await api.createArticle(articleData);
     res.redirect(`/my`);
   } catch (error) {
     res.redirect(`back`);
+    res.redirect(`/articles/add?error=${encodeURIComponent(error.response.data)}`);
   }
 });
 
 articlesRoutes.get(`/edit/:id`, async (req, res) => {
   const { id } = req.params;
+  const { error } = req.query;
   const [article, categories] = await Promise.all([
     api.getArticle(id),
     api.getCategories(),
   ]);
-  res.render(`edit-post`, { article, categories });
+  res.render(`edit-post`, { id, article, categories, error });
+});
+
+articlesRoutes.post(`/edit/:id`, upload.single(`avatar`), async (req, res) => {
+  const { body, file } = req;
+  const { id } = req.params;
+  const articleData = {
+    title: body.title,
+    createdDate: changeDateFormat(body.date),
+    categories: ensureArray(body.category),
+    announce: body.announcement,
+    fullText: body[`full-text`],
+    userId: user.id
+  };
+
+  try {
+    await api.editArticle(id, articleData);
+    res.redirect(`/my`);
+  } catch (error) {
+    res.redirect(`/articles/edit/${id}?error=${encodeURIComponent(error.response.data)}`);
+  }
 });
 
 articlesRoutes.get(`/:id`, async (req, res) => {
   const { id } = req.params;
+  const { error } = req.query;
   const article = await api.getArticle(id, true);
-  res.render(`articles/ticket`, { article });
+  res.render(`articles/post`, { article, id, error });
+});
+
+articlesRoutes.post(`/:id/comments`, async (req, res) => {
+  const { id } = req.params;
+  const { comment } = req.body;
+
+  try {
+    await api.createComment(id, { text: comment });
+    res.redirect(`/articles/${id}`);
+  } catch (error) {
+    res.redirect(`/articles/${id}?error=${encodeURIComponent(error.response.data)}`);
+  }
 });
 
 module.exports = articlesRoutes;
