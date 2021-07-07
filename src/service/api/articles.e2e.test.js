@@ -13,6 +13,7 @@ const { HttpCode } = require(`../constants`);
 
 const mockData = [
   {
+    user: `ivanov@example.com`,
     id: "rgJIL-",
     category: [
       "Музыка",
@@ -30,31 +31,34 @@ const mockData = [
     createdDate: "2021-01-14 03:01:02",
     comments: [
       {
+        user: `petrov@example.com`,
         text: "Мне кажется или я уже читал это где-то?",
         id: "7klUAx",
       },
       {
-        text:
-          "Давно не пользуюсь стационарными компьютерами. Ноутбуки победили.Плюсую, но слишком много буквы!",
+        user: `ivanov@example.com`,
+        text: "Давно не пользуюсь стационарными компьютерами. Ноутбуки победили.Плюсую, но слишком много буквы!",
         id: "U72Awr",
       },
       {
+        user: `petrov@example.com`,
         text: "Это где ж такие красоты?Плюсую, но слишком много буквы!",
         id: "6szAco",
       },
       {
-        text:
-          "Совсем немного...Давно не пользуюсь стационарными компьютерами. Ноутбуки победили.Это где ж такие красоты?",
+        user: `ivanov@example.com`,
+        text: "Совсем немного...Давно не пользуюсь стационарными компьютерами. Ноутбуки победили.Это где ж такие красоты?",
         id: "75cBM0",
       },
       {
-        text:
-          "Планируете записать видосик на эту тему?Совсем немного...Мне не нравится ваш стиль. Ощущение, что вы меня поучаете.",
+        user: `petrov@example.com`,
+        text: "Планируете записать видосик на эту тему?Совсем немного...Мне не нравится ваш стиль. Ощущение, что вы меня поучаете.",
         id: "fFUn7o",
       },
     ],
   },
   {
+    user: `petrov@example.com`,
     id: "T7JUa0",
     category: [
       "Без рамки",
@@ -75,12 +79,14 @@ const mockData = [
     createdDate: "2020-12-08 13:20:01",
     comments: [
       {
+        user: `ivanov@example.com`,
         text: "Плюсую, но слишком много буквы!",
         id: "ZEzN6W",
       },
     ],
   },
   {
+    user: `ivanov@example.com`,
     id: "vhmaSi",
     category: ["Рисование", "Программирование", "Еда", "IT"],
     announce:
@@ -91,43 +97,41 @@ const mockData = [
     createdDate: "2020-11-19 02:00:57",
     comments: [
       {
+        user: `petrov@example.com`,
         text: "Плюсую, но слишком много буквы!",
         id: "XVoiz4",
       },
       {
-        text:
-          "Мне кажется или я уже читал это где-то?Это где ж такие красоты?Планируете записать видосик на эту тему?",
+        user: `ivanov@example.com`,
+        text: "Мне кажется или я уже читал это где-то?Это где ж такие красоты?Планируете записать видосик на эту тему?",
         id: "dmi1Wa",
       },
+      { user: `petrov@example.com`, text: "Совсем немного...", id: "jis8w-" },
       {
-        text: "Совсем немного...",
-        id: "jis8w-",
-      },
-      {
-        text:
-          "Согласен с автором!Планируете записать видосик на эту тему?Это где ж такие красоты?",
+        user: `ivanov@example.com`,
+        text: "Согласен с автором!Планируете записать видосик на эту тему?Это где ж такие красоты?",
         id: "e0gUej",
       },
       {
-        text:
-          "Давно не пользуюсь стационарными компьютерами. Ноутбуки победили.Согласен с автором!Плюсую, но слишком много буквы!",
+        user: `petrov@example.com`,
+        text: "Давно не пользуюсь стационарными компьютерами. Ноутбуки победили.Согласен с автором!Плюсую, но слишком много буквы!",
         id: "gECBR1",
       },
       {
+        user: `ivanov@example.com`,
         text: "Хочу такую же футболку :-)",
         id: "CzyMsR",
       },
       {
+        user: `petrov@example.com`,
         text: "Это где ж такие красоты?",
         id: "gGQHYY",
       },
-      {
-        text: "Согласен с автором!",
-        id: "-3j1Wv",
-      },
+      { user: `ivanov@example.com`, text: "Согласен с автором!", id: "-3j1Wv" },
     ],
   },
   {
+    user: `petrov@example.com`,
     id: "6pCRSS",
     category: [
       "Железо",
@@ -146,6 +150,7 @@ const mockData = [
     comments: [],
   },
   {
+    user: `ivanov@example.com`,
     id: "IBA_YK",
     category: ["Кино", "Железо", "Еда", "Музыка", "Программирование"],
     announce:
@@ -156,6 +161,7 @@ const mockData = [
     createdDate: "2020-12-02 05:07:22",
     comments: [
       {
+        user: `petrov@example.com`,
         text: "Хочу такую же футболку :-)Совсем немного...",
         id: "5cEwn2",
       },
@@ -201,9 +207,7 @@ describe(`API returns an article with given id`, () => {
   test(`Status code 200`, () => expect(response.statusCode).toBe(HttpCode.OK));
 
   test(`article's title is "Как начать программировать"`, () =>
-    expect(response.body.title).toBe(
-      `Как начать программировать`
-    ));
+    expect(response.body.title).toBe(`Как начать программировать`));
 });
 
 describe(`API creates an article if data is valid`, () => {
