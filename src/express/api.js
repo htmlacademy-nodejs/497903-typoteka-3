@@ -42,21 +42,35 @@ class API {
   async createArticle(data) {
     return this._load(`/articles`, {
       method: HttpMethod.POST,
-      data
+      data,
     });
   }
 
   async editArticle(id, data) {
     return this._load(`/articles/${id}`, {
       method: HttpMethod.PUT,
-      data
+      data,
     });
   }
 
   async createComment(id, data) {
     return this._load(`/articles/${id}/comments`, {
       method: HttpMethod.POST,
-      data
+      data,
+    });
+  }
+
+  createUser(data) {
+    return this._load(`/user`, {
+      method: HttpMethod.POST,
+      data,
+    });
+  }
+
+  auth(email, password) {
+    return this._load(`/user/auth`, {
+      method: HttpMethod.POST,
+      data: { email, password },
     });
   }
 }
